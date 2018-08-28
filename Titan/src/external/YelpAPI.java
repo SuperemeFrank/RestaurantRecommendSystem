@@ -14,6 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import entity.Item;
+import entity.Item.ItemBuilder;
+
 
 public class YelpAPI {
 	private static final String HOST = "https://api.yelp.com";
@@ -86,6 +89,54 @@ public class YelpAPI {
 		}
 		
 	}
+	
+	private List<Item> getItemList(JSONArray restaurants) throws JSONException {
+		List<Item> list = new ArrayList<>();
+		
+		for (int i = 0; i < restaurants.length(); i++) {
+			JSONObject restaurant = restaurants.getJSONObject(i);
+			
+			ItemBuilder builder = new ItemBuilder();
+			if (!restaurant.isNull("id")) {
+				builder.setItemId(restaurant.getString("id"));
+			}
+			if (!restaurant.isNull("name")) {
+				builder.setName(restaurant.getString("name"));
+			}
+			if (!restaurant.isNull("url")) {
+				builder.setUrl(restaurant.getString("url"));
+			}
+			if (!restaurant.isNull("image_url")) {
+				builder.setImageUrl(restaurant.getString("image_url"));
+			}
+			if (!restaurant.isNull("rating")) {
+				builder.setRating(restaurant.getDouble("rating"));
+			}
+			if (!restaurant.isNull("distance")) {
+				builder.setDistance(restaurant.getDouble("distance"));
+			}
+			
+			builder.setAddress(getAddress(restaurant));
+			builder.setCategories(getCategories(restaurant));
+			
+			list.add(builder.build());
+			
+		}
+		return list;
+	}
+	
+		
+	private Set<String> getCategories(JSONObject restaurant) throws JSONException {
+		Set<String> categories = new HashSet<>();
+		
+		return categories;
+	}
+
+	private String getAddress(JSONObject restaurant) {
+		String address = "";
+		return address;
+	}
+
 	
 	public static void main(String[] args) {
 		YelpAPI tmAPI = new YelpAPI();
