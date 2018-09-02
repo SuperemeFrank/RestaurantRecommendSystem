@@ -2,6 +2,7 @@ package rpc;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import entity.Item;
+import external.YelpAPI;
 
 /**
  * Servlet implementation class SearchItem
@@ -32,20 +36,19 @@ public class SearchItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		double lat = Double.parseDouble(request.getParameter("lat"));
+		double lon = Double.parseDouble(request.getParameter("lon"));
+		
+		YelpAPI yelpAPI = new YelpAPI();
+		List<Item> items = yelpAPI.search(lat, lon, "");
+		
 		JSONArray array = new JSONArray();
-		if (request.getParameter("username") != null) {
-			String username = request.getParameter("username");
-			
-			try {
-				array.put(new JSONObject().put("username", "Frank"));
-				array.put(new JSONObject().put("id", "12321"));
-			}catch(JSONException ex) {
-				ex.printStackTrace();
-			}
-			
+		for (Item item : items) {
+			array.put(item.toJsonObject());
 		}
 		RpcHelper.writeJsonArray(response, array);
+		
 	}
 
 	/**
