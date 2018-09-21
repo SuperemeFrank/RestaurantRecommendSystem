@@ -79,14 +79,14 @@ public class YelpAPI {
 		return new ArrayList<>();
 	}
 	
-	private void queryAPI(double lat, double lon) {
-		List<Item> itemList = search(lat, lon, null);
-		for (Item item : itemList) {
-			JSONObject jsonObject = item.toJsonObject();
-			System.out.println(jsonObject);
-		}
-		
-	}
+//	private void queryAPI(double lat, double lon) {
+//		List<Item> itemList = search(lat, lon, null);
+//		for (Item item : itemList) {
+//			JSONObject jsonObject = item.toJSONObject();
+//			System.out.println(jsonObject);
+//		}
+//		
+//	}
 	
 	private List<Item> getItemList(JSONArray restaurants) throws JSONException {
 		List<Item> list = new ArrayList<>();
@@ -131,7 +131,7 @@ public class YelpAPI {
 			JSONArray array = restaurant.getJSONArray("categories");
 			for(int i = 0; i < array.length(); i++) {
 				JSONObject category = array.getJSONObject(i);
-				if (category.isNull("alias")) {
+				if (!category.isNull("alias")) {
 					categories.add(category.getString("alias"));
 				}
 			}
@@ -155,8 +155,8 @@ public class YelpAPI {
 	}
 
 	
-	public static void main(String[] args) {
-		YelpAPI tmAPI = new YelpAPI();
-		tmAPI.queryAPI(37.38, -122.08);
-	}
+//	public static void main(String[] args) {
+//		YelpAPI tmAPI = new YelpAPI();
+//		tmAPI.queryAPI(37.38, -122.08);
+//	}
 }
